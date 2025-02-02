@@ -1,4 +1,4 @@
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[iQuHackDocumentation]]></title><description><![CDATA[Obsidian digital garden]]></description><link>https://azalamer.com/iQuhackDocs/</link><image><url>https://azalamer.com/iQuhackDocs/lib/media/favicon.png</url><title>iQuHackDocumentation</title><link>https://azalamer.com/iQuhackDocs/</link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sun, 02 Feb 2025 17:41:35 GMT</lastBuildDate><atom:link href="https://azalamer.com/iQuhackDocs/lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sun, 02 Feb 2025 17:41:35 GMT</pubDate><copyright><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></copyright><ttl>60</ttl><dc:creator>Azal, Aravind, Madison,Ayden,Daniel</dc:creator><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[iQuHackDocumentation]]></title><description><![CDATA[Obsidian digital garden]]></description><link>https://azalamer.com/iQuhackDocs/</link><image><url>https://azalamer.com/iQuhackDocs/lib/media/favicon.png</url><title>iQuHackDocumentation</title><link>https://azalamer.com/iQuhackDocs/</link></image><generator>Webpage HTML Export plugin for Obsidian</generator><lastBuildDate>Sun, 02 Feb 2025 17:45:27 GMT</lastBuildDate><atom:link href="https://azalamer.com/iQuhackDocs/lib/rss.xml" rel="self" type="application/rss+xml"/><pubDate>Sun, 02 Feb 2025 17:45:25 GMT</pubDate><copyright><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></copyright><ttl>60</ttl><dc:creator>Azal, Aravind, Madison,Ayden,Daniel</dc:creator><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
  <br><br>For this task, we simulate the time-evolution of the whole cat-system using qubits. We simulate the hamiltonian which corresponds to the resonator, and it's associated coupling to the buffer.<br><br>Because we are working with operators acting on spaces with different degrees of freedom, we very quickly ran into a dimension error. The initial truncated Hilbert spaces were simply the wrong dimensions. The solution to that was simple enough, we used the tensor product. Any operator which only acted on the resonator in the space, was tensored with  so that it could operate in the composite Hilbert space.<br>After finding our solution, we took the partial trace of the resonator to reconstruct the individual behavior. <br><br>We set up the simulation in the following way:<br>Hbuff = g2 * dq.dag(a) @ dq.dag(a) @ b + jnp.conj(g2) * a @ a @ dq.dag(b) + jnp.conj(eps) * b + eps * dq.dag(b)
 
 # Modelling our buffer interaction hamiltonian
@@ -12,11 +12,10 @@ res = dq.mesolve(Hbuff,jump_ops, psi0, t_save, exp_ops=exp_ops) # solve the mast
   
 
 trace_a = dq.ptrace(res.states, 0,res.states.dims) # partial trace over b
-<br>Below you can see the Wigner probability distribution<br>
-<img alt="zOp" src="https://azalamer.com/iQuhackDocs/lib/media/zop.gif"><br><br>From here, we knew that to find the number of photons we needed the expectation value of the number operator. Similarly to get the flux we needed the expectation value of the parity operator. <br>numOp = dq.tensor(dq.number(na), dq.eye(nb))
+<br>Below you can see the Wigner probability distribution<br><br>From here, we knew that to find the number of photons we needed the expectation value of the number operator. Similarly to get the flux we needed the expectation value of the parity operator. <br>numOp = dq.tensor(dq.number(na), dq.eye(nb))
 parity_diag_matrix = parity(na)
 <br>Finally we looped through all the states in the evolution and calculated the parity<br>
-and number. We expected the parity to be constant (as it implied the buffer was working), and the photon number to increase. <br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.1-getting-started-with-dynamiqs.html</link><guid isPermaLink="false">Problem 1/Task 1.1 - Getting started with dynamiqs.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 17:41:30 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/zop.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/zop.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
+and number. We expected the parity to be constant (as it implied the buffer was working), and the photon number to increase. <br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.1-getting-started-with-dynamiqs.html</link><guid isPermaLink="false">Problem 1/Task 1.1 - Getting started with dynamiqs.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 17:43:21 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/zop.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/zop.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
  <br><br>We compared the dynamics between the full two-mode system (memory + buffer) to a simplified effective model where the buffer mode has been eliminated adiabatically. The key analysis tool was examining how the fidelity between these two approaches evolved over time.<br><br>The full system evolves according to the master equation:<br><br>With Hamiltonian:<br><br>After adiabatic elimination of the buffer mode, the system reduces to:<br><br>Where:<br>
 <br> is the two-photon dissipation rate
 <br> defines the cat amplitude
@@ -38,11 +37,71 @@ based on <a data-tooltip-position="top" aria-label="https://www.dynamiqs.org/sta
 <br>Demonstrated the lack of sensitivity to  parameter
 
 
-<br>For details on parameter settings and specific visualization code, consult the associated Jupyter notebook.<br><br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.2-comparison-with-eliminated-buffer-mode.html</link><guid isPermaLink="false">Problem 1/Task 1.2- Comparison with eliminated buffer mode.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 14:36:50 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/heyo.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/heyo.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
+<br>For details on parameter settings and specific visualization code, consult the associated Jupyter notebook.<br><br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.2-comparison-with-eliminated-buffer-mode.html</link><guid isPermaLink="false">Problem 1/Task 1.2- Comparison with eliminated buffer mode.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 17:44:05 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/heyo.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/heyo.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
  <br><br>For this challenge, we were tasked with finding the Z rotation gate for the cat state. In other words, we are to find the state that takes the all evens (Cat plus state) to the all odds (Cat minus state) and vice versa. Due to the form of the Hamiltonian as well as the system we are describing, we know that parity will not be preserved. Therefore, we conclude that the Hamiltonian describing the Z rotation is the sum of the creation and annihilation operators (weighted by constant ).<br><br>We know that the unitary will take the form of the time evolution operator  and that the Hamiltonian takes the form , which led us to our conclusion. <br><br>Because a photon must be dissipated to change parity, we have the jump operation (argument of dissipation function) as:<br>jump_ops = [a_tensored- alpha*dq.tensor(dq.eye(na), dq.eye(nb))]
 <br>And in latex as<br><br>We also have the given Hamiltonian:<br>Hbuff = g2 * dq.dag(a) @ dq.dag(a) @ b  + jnp.conj(g2) * a @ a @ dq.dag(b) + jnp.conj(eps) * b + eps * dq.dag(b)
 <br>Written in latex as<br><br>and the Zeno Hamiltonian:<br>H_zeno = epsilon_z.conjugate()*a_tensored@a_tensored+epsilon_z*adag_tensored@adag_tensored
-<br><br><br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.3-zeno-gate-implementation.html</link><guid isPermaLink="false">Problem 1/Task 1.3 - Zeno Gate Implementation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 14:37:01 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/zop.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/zop.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
+<br><br><br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.3-zeno-gate-implementation.html</link><guid isPermaLink="false">Problem 1/Task 1.3 - Zeno Gate Implementation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 17:44:36 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/zop.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/zop.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
+ <br><br>This project simulates a superconducting circuit with two modes (a "memory" mode and a "buffer" mode) subject to parametric drives. This is solely for the lab-frame.<br><br>
+<br>Modes and Frequencies: 
+<br>Two modes with bare resonant frequencies  and  are defined. The AC Stark shifts  and  are computed iteratively to update these frequencies. 
+<br>Driving Terms: A flux pump with amplitude  and a buffer drive with amplitude  modulate the system. The flux pump produces an Autler–Townes Splitting term with sinusoidal modulation, while the buffer drive acts directly on the buffer mode. -
+<br>Hamiltonians: : 
+
+<br>Effective Lab–Frame Hamiltonian : Incorporates the bare Hamiltonian, ATS term (with sine and cosine functions of the phase operator), and the buffer drive.
+
+
+<br><br>
+<br>Parameter and Operator Definitions: - Define units, system parameters (frequencies, coupling strengths, and loss rates). - Compute the AC Stark shifts iteratively. - Construct the Fock space and corresponding annihilation operators for each mode. 
+<br>Hamiltonian Construction:
+
+<br>Effective Lab–Frame Hamiltonian 
+
+<br>Defined by the bare mode energies, the ATS driving term modulated by the flux pump, and the buffer drive.
+
+
+
+
+<br>Simulation: - Define collapse operators to model dissipation in both modes. - Initialize the system in the vacuum state. - Use dq.mesolve to simulate the time evolution under both Hamiltonians. - Visualize the state dynamics using Wigner function plots. 
+<br><img alt="output" src="https://azalamer.com/iQuhackDocs/lib/media/output.gif"><br>
+Wigner probability distribution of the lab-frame state]]></description><link>https://azalamer.com/iQuhackDocs/problem-2/task-2.1-lab-frame-simulation.html</link><guid isPermaLink="false">Problem 2/Task 2.1 - Lab Frame Simulation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 17:44:55 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/output.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/output.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
+ <br><br>This section focuses exclusively on the implementation and simulation of the rotated–displaced Hamiltonian. In this approach, the Hamiltonian is transformed into a frame that both rotates and displaces the original operators. This transformation simplifies the description of the driven system by absorbing part of the drive into the new frame, and it introduces additional correction terms.<br><br>
+<br>Displacement Fields: The displacement for each mode is defined as a combination of two frequency components:  where  and  are determined by the system parameters and the flux pump amplitude. 
+<br>Rotated–Displaced Operators: The operators in the new frame are defined as:  where  is the identity operator and  and  are the chosen rotation frequencies.
+<br>Hamiltonian Contributions: The total rotated–displaced Hamiltonian  consists of several parts:
+
+<br>Linear Term : Represents the bare mode energies in the new frame.
+<br>Rotating Frame Correction : Compensates for the energy offset due to the frame rotation. 
+<br>Displacement Derivative Correction : Arises from the time derivative of the displacement fields. 
+<br>ATS Term : Includes a Taylor expansion of the sinusoidal modulation (due to the flux pump) that produces the Autler–Townes Splitting. 
+<br>Buffer Drive : The drive acting on the buffer mode appears non-rotating in this frame.
+
+
+<br><br>The rotated–displaced Hamiltonian is implemented as a time-dependent function hamiltonian_rotating_displaced(t).<br>
+Key steps include:<br>
+<br>
+Computing Displacement Fields: The fields  and  and their time derivatives ( and ) are computed using the defined frequency .
+
+<br>
+Constructing Rotated–Displaced Operators: The function op_rot_displaced is used to generate the time-dependent operators , , , and .
+
+<br>
+Building the Hamiltonian: Each term is calculated:
+
+<br>: The energy of the modes in the new frame.
+<br>: The correction due to the chosen rotating frame frequencies.
+<br>: The correction arising from the time derivatives of the displacement fields.
+<br>: Constructed using a Taylor series expansion of the sine and cosine functions to approximate the ATS term.
+<br>: The drive term on the buffer mode, adjusted for the rotated frame.
+
+
+<br>
+Time-Callable Function: The complete Hamiltonian is wrapped using dq.timecallable, making it ready for time-dependent simulation.
+
+<br>
+Simulation: Using dq.mesolve, the system's evolution under  is computed. The simulation incorporates collapse operators to model dissipation in both modes.
+
+<br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-2/task-2.2-rotating-frame-simulation.html</link><guid isPermaLink="false">Problem 2/Task 2.2 - Rotating Frame Simulation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 17:45:09 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/ahhhhh.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/ahhhhh.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
  <br><br>We created a gradient descent to model the optimization of the drive amplitude as a function of time in order to inflate the vacuum to the cat state as accurately as possible given the time frame and desired mean number of photons.<br><br>The total Hamiltonian is described by the two-photon Hamiltonian and a driving Hamiltonian. The amplitude of the driving now varies as a function of time, , so the total Hamiltonian is now described by , where . <br>The target state is a cat state constructed from two coherent states, , with the target amplitude chosen such that the average photon number is .<br>The loss function is defined based on the seviatation of the expected photon number of the final state from the target value:<br>
 <br>The drive amplitude  for <br><br>How the code works:<br>Initialization: The simulation sets up a Hilbert space with a cutoff  and a total simulation time . The initial state is chosen as the vacuum state.<br># Simulation parameters (use lower resolution for debugging)
 N_cutoff = 20  # Hilbert space dimension for the mode
@@ -94,65 +153,6 @@ plt.legend()
 plt.show()
 ]]></description><link>https://azalamer.com/iQuhackDocs/problem-1/task-1.4-optimal-control-for-state-preparation.html</link><guid isPermaLink="false">Problem 1/Task 1.4 - Optimal Control for State-Preparation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 14:30:29 GMT</pubDate></item><item><title><![CDATA[Development Process]]></title><description><![CDATA[ 
  <br><br>When working on our process, maintaining a safe programming environment became essential as we switched between qBraid and local environments. Our git environment was very standard, one main branch with branches off, and commits required pull requests to move upstream.<br><br>We chose to solve each problem in an independent notebook to make parallel work simpler. Additionally near the end, we refactored to hold key constants and methods in the globalConstants.py file. <br>Any methods used had to come associated with doc-strings as well.]]></description><link>https://azalamer.com/iQuhackDocs/problem-2/methods-and-constants.html</link><guid isPermaLink="false">Problem 2/Methods and Constants.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 12:22:10 GMT</pubDate></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
- <br><br>This project simulates a superconducting circuit with two modes (a "memory" mode and a "buffer" mode) subject to parametric drives. This is solely for the lab-frame.<br><br>
-<br>Modes and Frequencies: 
-<br>Two modes with bare resonant frequencies  and  are defined. The AC Stark shifts  and  are computed iteratively to update these frequencies. 
-<br>Driving Terms: A flux pump with amplitude  and a buffer drive with amplitude  modulate the system. The flux pump produces an Autler–Townes Splitting term with sinusoidal modulation, while the buffer drive acts directly on the buffer mode. -
-<br>Hamiltonians: : 
-
-<br>Effective Lab–Frame Hamiltonian : Incorporates the bare Hamiltonian, ATS term (with sine and cosine functions of the phase operator), and the buffer drive.
-
-
-<br><br>
-<br>Parameter and Operator Definitions: - Define units, system parameters (frequencies, coupling strengths, and loss rates). - Compute the AC Stark shifts iteratively. - Construct the Fock space and corresponding annihilation operators for each mode. 
-<br>Hamiltonian Construction:
-
-<br>Effective Lab–Frame Hamiltonian 
-
-<br>Defined by the bare mode energies, the ATS driving term modulated by the flux pump, and the buffer drive.
-
-
-
-
-<br>Simulation: - Define collapse operators to model dissipation in both modes. - Initialize the system in the vacuum state. - Use dq.mesolve to simulate the time evolution under both Hamiltonians. - Visualize the state dynamics using Wigner function plots. 
-<br><img alt="output" src="https://azalamer.com/iQuhackDocs/lib/media/output.gif">Wigner probability distribution of the lab-frame state]]></description><link>https://azalamer.com/iQuhackDocs/problem-2/task-2.1-lab-frame-simulation.html</link><guid isPermaLink="false">Problem 2/Task 2.1 - Lab Frame Simulation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 14:37:09 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/output.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/output.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
- <br><br>This section focuses exclusively on the implementation and simulation of the rotated–displaced Hamiltonian. In this approach, the Hamiltonian is transformed into a frame that both rotates and displaces the original operators. This transformation simplifies the description of the driven system by absorbing part of the drive into the new frame, and it introduces additional correction terms.<br><br>
-<br>Displacement Fields: The displacement for each mode is defined as a combination of two frequency components:  where  and  are determined by the system parameters and the flux pump amplitude. 
-<br>Rotated–Displaced Operators: The operators in the new frame are defined as:  where  is the identity operator and  and  are the chosen rotation frequencies.
-<br>Hamiltonian Contributions: The total rotated–displaced Hamiltonian  consists of several parts:
-
-<br>Linear Term : Represents the bare mode energies in the new frame.
-<br>Rotating Frame Correction : Compensates for the energy offset due to the frame rotation. 
-<br>Displacement Derivative Correction : Arises from the time derivative of the displacement fields. 
-<br>ATS Term : Includes a Taylor expansion of the sinusoidal modulation (due to the flux pump) that produces the Autler–Townes Splitting. 
-<br>Buffer Drive : The drive acting on the buffer mode appears non-rotating in this frame.
-
-
-<br><br>The rotated–displaced Hamiltonian is implemented as a time-dependent function hamiltonian_rotating_displaced(t).<br>
-Key steps include:<br>
-<br>
-Computing Displacement Fields: The fields  and  and their time derivatives ( and ) are computed using the defined frequency .
-
-<br>
-Constructing Rotated–Displaced Operators: The function op_rot_displaced is used to generate the time-dependent operators , , , and .
-
-<br>
-Building the Hamiltonian: Each term is calculated:
-
-<br>: The energy of the modes in the new frame.
-<br>: The correction due to the chosen rotating frame frequencies.
-<br>: The correction arising from the time derivatives of the displacement fields.
-<br>: Constructed using a Taylor series expansion of the sine and cosine functions to approximate the ATS term.
-<br>: The drive term on the buffer mode, adjusted for the rotated frame.
-
-
-<br>
-Time-Callable Function: The complete Hamiltonian is wrapped using dq.timecallable, making it ready for time-dependent simulation.
-
-<br>
-Simulation: Using dq.mesolve, the system's evolution under  is computed. The simulation incorporates collapse operators to model dissipation in both modes.
-
-<br>]]></description><link>https://azalamer.com/iQuhackDocs/problem-2/task-2.2-rotating-frame-simulation.html</link><guid isPermaLink="false">Problem 2/Task 2.2 - Rotating Frame Simulation.md</guid><dc:creator><![CDATA[Azal, Aravind, Madison,Ayden,Daniel]]></dc:creator><pubDate>Sun, 02 Feb 2025 14:37:15 GMT</pubDate><enclosure url="https://azalamer.com/iQuhackDocs/lib/media/ahhhhh.gif" length="0" type="image/gif"/><content:encoded>&lt;figure&gt;&lt;img src="https://azalamer.com/iQuhackDocs/lib/media/ahhhhh.gif"&gt;&lt;/figure&gt;</content:encoded></item><item><title><![CDATA[Overview]]></title><description><![CDATA[ 
  <br><br>This section details the comparison between the effective lab–frame Hamiltonian model and the full rotated–displaced Hamiltonian model by evaluating the fidelity between their resulting quantum states over time. The fidelity serves as a quantitative measure of how closely the effective model reproduces the dynamics of the full model.<br><br>
 <br>Fidelity Definition: The fidelity  between two quantum states  and  is defined as:<br>
 A fidelity of 1 indicates that the states are identical, while lower values indicate deviations between the models.
